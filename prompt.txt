@@ -1,0 +1,8 @@
+You must replicate the attached image using a strict two-step pipeline:
+Step 1: Decode. Meticulously analyze the attached image. Write a hidden, hyper-detailed textual description focusing entirely on the flat physical and visual attributes of the package. You must lock down the following:
+Flat Layout & Ratio: The exact rectangular proportions and central placement of all elements as if scanned.
+Typography & Copy: Identify and transcribe all text with perfect spelling, font style (e.g., green stylized serif, black bold sans-serif), weight, color, size, and precise placement relative to other elements (e.g., curved text at the top, bold product name below the logo, weight specifications).
+Branding & Details: The precise shape, colors, and textures of all logos (the green leaf logo), illustrations (the bowl of crackers with herbs), and certification seals (USDA, NON-GMO, GLUTEN-FREE), ensuring no elements are simplified or genericized. Maintain the correct scannable appearance of the barcode.
+Lighting & Environment: The perfectly even, flat studio lighting, with no highlights or reflections suggesting depth, presented against the clean, neutral background.
+Step 2: Generate. Take the exact textual blueprint you created in Step 1 and pass it directly to your image generation engine. Instruct the generator to execute that description literally, with zero creative interpretation, adjustments, or enhancements.
+Output the resulting image now. It must be a mathematically and visually precise 1:1 duplicate of the original 2D package face reference.
