@@ -124,6 +124,8 @@ The judge scores each replica on seven criteria (defined in `judge_prompt.txt`, 
 | `color` | 0.10 | Colours match the original. |
 | `barcode` | 0.10 | Plausible, correctly placed barcode. |
 
+Note that the weights are completely random and we can remove them or update them as we wish.
+
 The overall score is the weighted average of the dimension scores, normalized by the total weight. Weights are editable in the `criteria` dictionary in `scorer.py` — if you add or remove a dimension there, update `judge_prompt.txt` to match.
  
 
