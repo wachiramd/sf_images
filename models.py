@@ -6,7 +6,8 @@ TARGET_MODELS= [
 ]
 
 JUDGE_MODEL = [
-    "google/gemini-2.5-flash-image" 
+    #"google/gemini-2.5-flash-image" 
+    "openrouter/anthropic/claude-opus-4.8"
 ]
 #WE WILL CHANGE THE JUDGE TO A MORE CAPABLE MODEL, PREFERABLY CLAUDE OPUS. 
 # FOR THIS TRIAL RUN THE JUDGE MODEL IS NOT USED. WE JUST USE AN IF STATEMENT TO CHECK IF AN IMNAGE WAS PRODUCED.
