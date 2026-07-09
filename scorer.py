@@ -1,5 +1,6 @@
 import base64, os, re, json
 from pathlib import Path
+from datetime import datetime # timestamping outputs
 from inspect_ai.solver import TaskState
 from inspect_ai.model import (
      ContentImage,
@@ -26,9 +27,13 @@ criteria = {
 
 JUDGE_PROMPT = Path("judge_prompt.txt").read_text(encoding="utf-8").strip()
 
+# timestamping to save the outputs to prevent them from being overwritten by subsequent runs/generations
+
+RUN_ID = datetime.now().strftime("%Y%m%d-%H%M%S")
+
 JUDGE_NAME = JUDGE_MODEL[0] if isinstance(JUDGE_MODEL, (list, tuple)) else JUDGE_MODEL
 
-def extract_generated_image(state: TaskState):
+def extract_generated_image(state: TaskState): # return the generated image reference from the model output
     content = state.output.message.content
     if isinstance(content, list):
         for part in content:
@@ -44,16 +49,21 @@ MIME_EXT = {
     "image/webp": ".webp",
 }
 
-def save_image(image: str, sample_id) -> str | None:
+def save_image(image: str, sample_id, model) -> str | None:
     #base64 URI image saved to outputs
     if not (isinstance(image, str) and image.startswith("data")):
         return None
-    header,_, b64 = image.partition(",")
+    header,_, b64 = image.partition(",") #header looks like : "data:image/jpg;base64"
     match = re.match(r"data:([^;,]+)", header)
     mime = match.group(1).lower() if match else "image/png"
     ext = MIME_EXT.get(mime, ".png")
-    os.makedirs("outputs", exist_ok=True)
-    out = f"outputs/{sample_id}{ext}"
+    # adding the mmodel name to the saved images. model names contain
+    # / and need to be removed to be saved in a directory.
+    model_safe = re.sub(r"[^A-Za-z0-9._-]", "-", str(model))
+    out_dir = os.path.join("outputs", RUN_ID, model_safe)
+
+    os.makedirs(out_dir, exist_ok=True)
+    out = os.path.join(out_dir, f"{sample_id}{ext}") # when we include epochs/turns, we can add them here.
     with open (out, "wb") as f:
         f.write(base64.b64decode(b64))
 
@@ -88,7 +98,9 @@ def image_fidelity():
                 explanation = "No image was generated. Possible refusal or failure",
                 metadata={"image_generated": False},
             )
-        saved_path = save_image(generated, state.sample_id)
+        model_name = str(state.model)
+        epoch = getattr(state, "epoch", 1)
+        saved_path = save_image(generated, state.sample_id, model_name)
         generated_ref = saved_path or generated
 
         #ground truth recorded 
